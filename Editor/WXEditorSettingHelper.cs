@@ -7,13 +7,24 @@ using static WeChatWASM.WXConvertCore;
 using System;
 using System.Reflection;
 
+class MyAllPostprocessor : AssetPostprocessor
+{
+    static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths, bool didDomainReload)
+    {
+        WeChatWASM.WXSettingsHelperInterface.DoNothing();
+    }
+}
+
 namespace WeChatWASM
 {
-    
-    [InitializeOnLoad]
+    // Asset operations such as asset loading should be avoided in InitializeOnLoad method
+    // https://docs.unity3d.com/ScriptReference/InitializeOnLoadAttribute.html
+    // [InitializeOnLoad]
     public class WXSettingsHelperInterface
     {
         public static WXSettingsHelper helper = new WXSettingsHelper();
+
+        public static void DoNothing() {}
     }
 
     public class WXSettingsHelper
